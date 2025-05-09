@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>{% block title %}Food Delivery App{% endblock %}</title>
+    <!-- Add any global CSS, JS, or other head elements here -->
+    <link rel="stylesheet" href="{{ url_for(\'static\', filename=\'css/style.css\') }}">
+</head>
+<body>
+    <nav>
+        <a href="{{ url_for(\'index\') }}">Home</a>
+        <!-- Add more navigation links as needed, e.g., for customer, restaurant, admin sections -->
+        {% if current_user and current_user.is_authenticated %}
+            <span>Hello, {{ current_user.username }}!</span>
+            <a href="#">Logout</a> <!-- Placeholder for logout -->
+        {% else %}
+            <a href="#">Login</a> <!-- Placeholder for login -->
+            <a href="#">Register</a> <!-- Placeholder for registration -->
+        {% endif %}
+    </nav>
+    <hr>
+    <main>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <ul class=flashes>
+                {% for category, message in messages %}
+                    <li class="{{ category }}">{{ message }}</li>
+                {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
+        {% block content %}{% endblock %}
+    </main>
+    <footer>
+        <p>&copy; 2025 Food Delivery App</p>
+    </footer>
+    <!-- Add any global JS at the end of the body here -->
+</body>
+</html>

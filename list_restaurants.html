@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}Browse Restaurants - {{ super() }}{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Find Your Next Meal</h1>
+    <p>Search or browse restaurants below.</p>
+    
+    {# Add search/filter form here #}
+    <form method="GET" action="{{ url_for(\'customer_bp.list_restaurants\') }}">
+        <input type="text" name="search_query" placeholder="Search by name or cuisine">
+        <input type="submit" value="Search">
+    </form>
+
+    <h2>All Restaurants (Placeholder)</h2>
+    {# Loop through restaurants and display them #}
+    {# Example structure for a restaurant listing:
+    <div class="restaurant-card">
+        <h3>Restaurant Name</h3>
+        <p>Cuisine: Italian</p>
+        <p>Rating: 4.5/5</p>
+        <a href="{{ url_for(\'customer_bp.view_restaurant_menu\', restaurant_id=restaurant.id) }}">View Menu</a>
+    </div>
+    #}
+    <p>List of restaurants will appear here.</p>
+</div>
+{% endblock %}

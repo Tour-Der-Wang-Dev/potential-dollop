@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}My Addresses - {{ super() }}{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Manage Your Delivery Addresses</h1>
+    <p><a href="{{ url_for(\'customer_bp.add_address\') }}" class="button">Add New Address</a></p>
+    
+    {% if addresses and addresses|length > 0 %}
+        <h2>Your Saved Addresses:</h2>
+        <ul>
+            {% for address in addresses %}
+                <li>
+                    <strong>{{ address.description }}</strong> ({{ 'Default' if address.is_default else 'Set as Default' }})<br>
+                    {{ address.street }}<br>
+                    {{ address.city }}, {{ address.state }} {{ address.zip_code }}
+                    <p>
+                        <a href="{{ url_for(\'customer_bp.edit_address\', address_id=address.id) }}">Edit</a> |
+                        <form method="POST" action="{{ url_for(\'customer_bp.delete_address\', address_id=address.id) }}" style="display:inline;">
+                            <input type="submit" value="Delete" onclick="return confirm(\'Are you sure you want to delete this address?\')">
+                        </form>
+                        {# Add a form to set as default if not already default #}
+                        {% if not address.is_default %}
+                            <form method="POST" action="#" style="display:inline;"> {# Placeholder for set_default_address route #}
+                                <input type="hidden" name="address_id" value="{{ address.id }}">
+                                <input type="submit" value="Set as Default">
+                            </form>
+                        {% endif %}
+                    </p>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>You have no saved addresses. Please add one!</p>
+    {% endif %}
+</div>
+{% endblock %}

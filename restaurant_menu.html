@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}{{ restaurant.name if restaurant else \"Restaurant\" }} Menu - {{ super() }}{% endblock %}
+
+{% block content %}
+<div class="container">
+    {% if restaurant %}
+        <h1>{{ restaurant.name }}</h1>
+        <p>{{ restaurant.description }}</p>
+        <p>Cuisine: {{ restaurant.cuisine_type }}</p>
+        <p>Address: {{ restaurant.address }}</p>
+        <p>Contact: {{ restaurant.phone_number }}</p>
+        <p>Operating Hours: {{ restaurant.operating_hours }}</p>
+        
+        <h2>Menu</h2>
+        {% if menu_items and menu_items|length > 0 %}
+            <div class="menu-items">
+                {% for item in menu_items %}
+                    <div class="menu-item-card">
+                        <h3>{{ item.name }}</h3>
+                        <p>{{ item.description }}</p>
+                        <p>Price: ${{ "%.2f"|format(item.price) }}</p>
+                        {# Add to cart button/form #}
+                        <form method="POST" action="{{ url_for(\"customer_bp.view_cart\") }}"> {# Placeholder action #}
+                            <input type="hidden" name="menu_item_id" value="{{ item.id }}">
+                            <input type="number" name="quantity" value="1" min="1" style="width: 50px;">
+                            <input type="submit" value="Add to Cart">
+                        </form>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>This restaurant currently has no menu items listed.</p>
+        {% endif %}
+    {% else %}
+        <h1>Restaurant Not Found</h1>
+        <p>The restaurant you are looking for does not exist or is currently unavailable.</p>
+    {% endif %}
+    <p><a href="{{ url_for(\"customer_bp.list_restaurants\") }}">Back to Restaurants</a></p>
+</div>
+{% endblock %}

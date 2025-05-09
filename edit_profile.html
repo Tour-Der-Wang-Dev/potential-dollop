@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}Edit Profile - {{ super() }}{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Edit Your Profile</h1>
+    <form method="POST" action="{{ url_for(\'customer_bp.edit_profile\') }}">
+        {{ form.hidden_tag() if form }} {# For CSRF protection with Flask-WTF #}
+        <p>
+            <label for="username">Username</label><br>
+            <input type="text" id="username" name="username" value="{{ user.username if user else \'\генерировать текст}}" required>
+        </p>
+        <p>
+            <label for="email">Email</label><br>
+            <input type="email" id="email" name="email" value="{{ user.email if user else \'\генерировать текст}}" required>
+        </p>
+        <p>
+            <label for="current_password">Current Password (if changing password)</label><br>
+            <input type="password" id="current_password" name="current_password">
+        </p>
+        <p>
+            <label for="new_password">New Password (leave blank if not changing)</label><br>
+            <input type="password" id="new_password" name="new_password">
+        </p>
+        <p>
+            <label for="confirm_new_password">Confirm New Password</label><br>
+            <input type="password" id="confirm_new_password" name="confirm_new_password">
+        </p>
+        <p>
+            <input type="submit" value="Update Profile">
+        </p>
+    </form>
+</div>
+{% endblock %}

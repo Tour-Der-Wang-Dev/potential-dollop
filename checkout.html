@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}Checkout - {{ super() }}{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Checkout</h1>
+    
+    <h2>Order Summary</h2>
+    {# Display order summary - items, quantities, prices, total #}
+    {# This would typically pull data from the cart session #}
+    <p>Order summary details will appear here.</p>
+
+    <h2>Delivery Address</h2>
+    {# Allow selection from saved addresses or input of a new one #}
+    {# This should integrate with the multi-address feature #}
+    <form method="POST" action="{{ url_for(\'customer_bp.checkout\') }}">
+        {{ form.hidden_tag() if form }} {# For CSRF protection with Flask-WTF #}
+        
+        <h3>Select Delivery Address:</h3>
+        {% if addresses and addresses|length > 0 %}
+            {% for address in addresses %}
+                <p>
+                    <input type="radio" name="delivery_address_id" value="{{ address.id }}" {{ \'checked\" if address.is_default else \"\" }}>
+                    <strong>{{ address.description }}</strong>: {{ address.street }}, {{ address.city }}, {{ address.state }} {{ address.zip_code }}
+                </p>
+            {% endfor %}
+            <p>Or, <a href="{{ url_for(\'customer_bp.add_address\', next=url_for(\'customer_bp.checkout\')) }}">add a new address</a>.</p>
+        {% else %}
+            <p>You have no saved addresses. <a href="{{ url_for(\'customer_bp.add_address\', next=url_for(\'customer_bp.checkout\')) }}">Please add one to proceed.</a></p>
+        {% endif %}
+
+        {# Placeholder for payment information - actual payment integration is complex #}
+        <h2>Payment Information (Placeholder)</h2>
+        <p>Payment details form will appear here. For now, we will simulate payment.</p>
+        
+        <p><input type="submit" value="Place Order" {% if not addresses or addresses|length == 0 %}disabled{% endif %}></p>
+    </form>
+</div>
+{% endblock %}

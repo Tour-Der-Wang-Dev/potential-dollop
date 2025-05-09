@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}Add New Address - {{ super() }}{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Add a New Delivery Address</h1>
+    <form method="POST" action="{{ url_for(\'customer_bp.add_address\') }}">
+        {{ form.hidden_tag() if form }} {# For CSRF protection with Flask-WTF #}
+        <p>
+            <label for="description">Description (e.g., Home, Work, Mom\'s House)</label><br>
+            <input type="text" id="description" name="description" required>
+        </p>
+        <p>
+            <label for="street">Street Address</label><br>
+            <input type="text" id="street" name="street" required>
+        </p>
+        <p>
+            <label for="city">City</label><br>
+            <input type="text" id="city" name="city" required>
+        </p>
+        <p>
+            <label for="state">State</label><br>
+            <input type="text" id="state" name="state" required>
+        </p>
+        <p>
+            <label for="zip_code">Zip Code</label><br>
+            <input type="text" id="zip_code" name="zip_code" required>
+        </p>
+        <p>
+            <input type="checkbox" id="is_default" name="is_default" value="true">
+            <label for="is_default">Set as default address</label>
+        </p>
+        <p>
+            <input type="submit" value="Save Address">
+        </p>
+    </form>
+    <p><a href="{{ url_for(\'customer_bp.view_addresses\') }}">Back to My Addresses</a></p>
+</div>
+{% endblock %}

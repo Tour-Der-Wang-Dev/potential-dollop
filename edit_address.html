@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}Edit Address - {{ super() }}{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Edit Delivery Address</h1>
+    {# Assuming an address object is passed to the template #}
+    <form method="POST" action="{{ url_for(\'customer_bp.edit_address\', address_id=address.id if address else 0) }}">
+        {{ form.hidden_tag() if form }} {# For CSRF protection with Flask-WTF #}
+        <p>
+            <label for="description">Description (e.g., Home, Work, Mom\"s House)</label><br>
+            <input type="text" id="description" name="description" value="{{ address.description if address else \'\' }}" required>
+        </p>
+        <p>
+            <label for="street">Street Address</label><br>
+            <input type="text" id="street" name="street" value="{{ address.street if address else \'\' }}" required>
+        </p>
+        <p>
+            <label for="city">City</label><br>
+            <input type="text" id="city" name="city" value="{{ address.city if address else \'\' }}" required>
+        </p>
+        <p>
+            <label for="state">State</label><br>
+            <input type="text" id="state" name="state" value="{{ address.state if address else \'\' }}" required>
+        </p>
+        <p>
+            <label for="zip_code">Zip Code</label><br>
+            <input type="text" id="zip_code" name="zip_code" value="{{ address.zip_code if address else \'\' }}" required>
+        </p>
+        <p>
+            <input type="checkbox" id="is_default" name="is_default" value="true" {{ \'checked\' if address and address.is_default else \'\' }}>
+            <label for="is_default">Set as default address</label>
+        </p>
+        <p>
+            <input type="submit" value="Update Address">
+        </p>
+    </form>
+    <p><a href="{{ url_for(\'customer_bp.view_addresses\') }}">Back to My Addresses</a></p>
+</div>
+{% endblock %}

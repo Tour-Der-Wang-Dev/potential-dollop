@@ -1,0 +1,46 @@
+Prompt for Designing a Database Schema for a Food Delivery Application
+🎯 Objective
+Guide lovable.dev to design a database schema for a Food Delivery application that includes entities like customers, restaurants, drivers, orders, and menu items, ensuring proper relationships and data integrity.
+Context
+You are tasked with creating a database schema for a Food Delivery application. The application needs to manage customers, restaurants, drivers, orders, and menu items. The schema should be designed to handle operations efficiently and maintain data integrity.
+📝 Details Required
+
+Entities:
+Customers
+Restaurants
+Drivers
+Orders
+Menu Items
+
+
+Relationships:
+Customers place orders.
+Restaurants have menu items.
+Orders are associated with customers, restaurants, and drivers.
+Drivers deliver orders.
+
+
+Fields and Data Types:
+Each entity should have appropriate fields with correct data types.
+Include primary keys, foreign keys, and any necessary constraints.
+
+
+Supabase Integration:
+Consider using Supabase's features like Row Level Security (RLS) for managing access to data.
+
+
+
+✨ Expected Output
+A detailed database schema including:
+
+Table definitions with fields and data types.
+Relationships between tables (e.g., foreign keys).
+Any indexes or constraints necessary for performance and data integrity.
+Suggestions for implementing Row Level Security (RLS) policies.
+
+💡 Additional Considerations
+
+Ensure the schema is normalized to at least the third normal form (3NF) to avoid data redundancy.
+Consider the scalability of the schema for handling a large number of orders and users.
+Think about how real-time updates (e.g., order status changes) might be handled using Supabase's Realtime features.
+

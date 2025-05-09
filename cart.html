@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block title %}Shopping Cart - {{ super() }}{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Your Shopping Cart</h1>
+    
+    {% if cart_items and cart_items|length > 0 %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Item</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Total</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in cart_items %}
+                    <tr>
+                        <td>{{ item.name }}</td>
+                        <td>${{ "%.2f"|format(item.price) }}</td>
+                        <td>
+                            <form method="POST" action="{{ url_for(\'customer_bp.view_cart\') }}" style="display:inline;"> {# Placeholder for update quantity #}
+                                <input type="hidden" name="cart_item_id" value="{{ item.id }}">
+                                <input type="number" name="quantity" value="{{ item.quantity }}" min="1" style="width: 50px;">
+                                <input type="submit" value="Update">
+                            </form>
+                        </td>
+                        <td>${{ "%.2f"|format(item.price * item.quantity) }}</td>
+                        <td>
+                            <form method="POST" action="{{ url_for(\'customer_bp.view_cart\') }}" style="display:inline;"> {# Placeholder for remove item #}
+                                <input type="hidden" name="remove_cart_item_id" value="{{ item.id }}">
+                                <input type="submit" value="Remove">
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+        <div class="cart-summary">
+            <h3>Cart Total: ${{ "%.2f"|format(cart_total if cart_total else 0) }}</h3>
+            <p><a href="{{ url_for(\'customer_bp.checkout\') }}" class="button">Proceed to Checkout</a></p>
+        </div>
+    {% else %}
+        <p>Your cart is currently empty.</p>
+    {% endif %}
+    
+    <p><a href="{{ url_for(\'customer_bp.list_restaurants\') }}">Continue Shopping</a></p>
+</div>
+{% endblock %}

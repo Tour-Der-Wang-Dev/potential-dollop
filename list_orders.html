@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}My Orders - {{ super() }}{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>My Order History</h1>
+    
+    {% if orders and orders|length > 0 %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Order ID</th>
+                    <th>Date Placed</th>
+                    <th>Restaurant</th>
+                    <th>Total Amount</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in orders %}
+                    <tr>
+                        <td>{{ order.id }}</td>
+                        <td>{{ order.created_at.strftime(\"%Y-%m-%d %H:%M\") if order.created_at else \"N/A\" }}</td>
+                        <td>{{ order.restaurant.name if order.restaurant else \"N/A\" }}</td>
+                        <td>${{ "%.2f"|format(order.total_price) if order.total_price else \"0.00\" }}</td>
+                        <td>{{ order.status }}</td>
+                        <td><a href="{{ url_for(\"customer_bp.view_order_details\", order_id=order.id) }}">View Details</a></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>You have not placed any orders yet.</p>
+    {% endif %}
+</div>
+{% endblock %}

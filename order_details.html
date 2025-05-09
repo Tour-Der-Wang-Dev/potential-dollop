@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block title %}Order Details - {{ super() }}{% endblock %}
+
+{% block content %}
+<div class="container">
+    {% if order %}
+        <h1>Order #{{ order.id }} Details</h1>
+        <p><strong>Date Placed:</strong> {{ order.created_at.strftime("%Y-%m-%d %H:%M") if order.created_at else "N/A" }}</p>
+        <p><strong>Restaurant:</strong> {{ order.restaurant.name if order.restaurant else "N/A" }}</p>
+        <p><strong>Total Amount:</strong> ${{ "%.2f"|format(order.total_price) if order.total_price else "0.00" }}</p>
+        <p><strong>Status:</strong> {{ order.status }}</p>
+        
+        <h2>Items Ordered:</h2>
+        {% if order.items and order.items|count > 0 %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Item Name</th>
+                        <th>Quantity</th>
+                        <th>Price at Order</th>
+                        <th>Subtotal</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in order.items %}
+                        <tr>
+                            <td>{{ item.menu_item.name if item.menu_item else "N/A" }}</td>
+                            <td>{{ item.quantity }}</td>
+                            <td>${{ "%.2f"|format(item.price_at_order) }}</td>
+                            <td>${{ "%.2f"|format(item.quantity * item.price_at_order) }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>No items found for this order.</p>
+        {% endif %}
+
+        <h2>Delivery Address:</h2>
+        {# Assuming the order object has a direct reference or can fetch the delivery address details #}
+        <p>Street: {{ order.delivery_address.street if order.delivery_address else "N/A" }}</p>
+        <p>City: {{ order.delivery_address.city if order.delivery_address else "N/A" }}</p>
+        <p>State: {{ order.delivery_address.state if order.delivery_address else "N/A" }}</p>
+        <p>Zip Code: {{ order.delivery_address.zip_code if order.delivery_address else "N/A" }}</p>
+
+    {% else %}
+        <h1>Order Not Found</h1>
+        <p>The order details you are looking for could not be found.</p>
+    {% endif %}
+    <p><a href="{{ url_for(\"customer_bp.list_orders\") }}">Back to My Orders</a></p>
+</div>
+{% endblock %}
